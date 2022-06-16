@@ -1,0 +1,11 @@
+type Auth {
+  hello: String
+}
+
+type Query {
+  hello: Response
+}
+
+type Mutation {
+  hello(text: String!): Response
+}

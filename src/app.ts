@@ -1,21 +1,18 @@
 import express from "express";
-import { ApolloServer, gql } from "apollo-server-express";
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { buildContext } from 'graphql-passport';
-import passport from 'passport';
-import session from 'express-session';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import { ApolloServer } from "apollo-server-express";
+import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import { buildContext } from "graphql-passport";
+import passport from "passport";
+import session from "express-session";
+import cors from "cors";
+import dotenv from "dotenv";
+import schema from "./graphql/schema";
 
 export default async function App() {
   const app = express();
   dotenv.config();
 
-  const whitelist = [
-    process.env.CLIENT_SIDE_URL,
-    process.env.ORIGIN_SERVER,
-    process.env.ADMIN_URL,
-  ];
+  const whitelist = [process.env.CLIENT_SIDE_URL];
   const corsOptions = {
     origin(
       origin: string | undefined,
@@ -56,7 +53,7 @@ export default async function App() {
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production" ? true : false,
       },
-    //   store,
+      //   store,
       unset: "destroy",
     })
   );
@@ -72,7 +69,7 @@ export default async function App() {
   app.use(express.json());
 
   const apolloServer = new ApolloServer({
-    // schema,
+    schema,
     context: ({ req, res }) => {
       return buildContext({ req, res });
     },

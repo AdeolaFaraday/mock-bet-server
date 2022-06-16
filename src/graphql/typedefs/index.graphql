@@ -1,0 +1,32 @@
+# Custom Scalars
+scalar JSON
+
+type Query {
+  _empty: String
+}
+
+# Custom Scalars
+scalar JSON
+
+type Query {
+  _empty: String
+}
+
+union ResponseData = Auth
+
+type All {
+  data: [ResponseData!]!
+}
+
+type Response {
+  statusCode: Int!
+  success: Boolean!
+  message: String!
+  data: ResponseData
+}
+type AllResponse {
+  statusCode: Int!
+  success: Boolean!
+  message: String!
+  data: All
+}

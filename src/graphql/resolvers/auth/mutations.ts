@@ -1,10 +1,8 @@
+import AuthService from "../../services/auth";
+
 const authMutations = {
-  hello: async (_: any, args: any, context: any) => {
-    try {
-      return "hello";
-    } catch (e: any) {
-      return e.message;
-    }
+  createUser: async (_: any, args: any, context: any) => {
+    return await AuthService.createUser(args);
   },
 };
 

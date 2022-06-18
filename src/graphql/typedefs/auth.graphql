@@ -1,11 +1,19 @@
-type Auth {
-  hello: String
+type User {
+  _id: String
+  username: String
+  email: String
 }
 
 type Query {
-  hello: Response
+  getUser: Response
+}
+
+input CreateUserInput {
+  username: String!
+  email: String!
+  password: String!
 }
 
 type Mutation {
-  hello(text: String!): Response
+  createUser(args: CreateUserInput!): Response
 }

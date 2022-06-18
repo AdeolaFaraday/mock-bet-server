@@ -12,7 +12,7 @@ type Query {
   _empty: String
 }
 
-union ResponseData = Auth
+union ResponseData = User
 
 type All {
   data: [ResponseData!]!

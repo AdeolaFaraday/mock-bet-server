@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { UserDoc } from "../../../models/auth/types";
 import { db } from "../../../db";
 import { QueryConfig } from "../../../types/db";
@@ -15,9 +16,13 @@ export default class AuthService {
       if (matchingUser?.rows?.[0]) {
         throw new Error("User with this email or username already exist");
       }
+      const hashedPassword = bcrypt.hashSync(
+        data.password,
+        bcrypt.genSaltSync(10)
+      );
       const query: QueryConfig = {
         text: `INSERT INTO user_account(username, email, password) VALUES($1, $2, $3) RETURNING *`,
-        values: [data?.username, data?.email, data?.password],
+        values: [data?.username, data?.email, hashedPassword],
       };
 
       const result = await db.query(query);

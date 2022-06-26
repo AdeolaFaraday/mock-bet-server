@@ -1,12 +1,13 @@
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
-import { buildContext } from "graphql-passport";
+import { buildContext, GraphQLLocalStrategy } from "graphql-passport";
 import passport from "passport";
 import session from "express-session";
 import cors from "cors";
 import dotenv from "dotenv";
 import schema from "./graphql/schema";
+import { verifyFn } from "./config/passport-strategies";
 
 export default async function App() {
   const app = express();
@@ -42,7 +43,7 @@ export default async function App() {
 
   app.use(
     session({
-      name: "myCookie",
+      name: "betSeverCookie",
       secret: process.env.DB_CLOUD_CONNECTION_SESSION_STORE as string,
       resave: false,
       saveUninitialized: true,
@@ -61,6 +62,7 @@ export default async function App() {
   // initialize passport for auth
   app.use(passport.initialize());
   app.use(passport.session());
+  passport.use(new GraphQLLocalStrategy(verifyFn));
 
   // app.set('trust proxy', 1);
   // app.use(morgan('dev'));
